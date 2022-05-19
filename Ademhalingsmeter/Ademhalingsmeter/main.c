@@ -5,10 +5,10 @@
  * Authors : Iwan & David
  */ 
 
+#define F_CPU 16000000
+
 #include <avr/io.h>
 #include <util/delay.h>
-
-#define F_CPU 16000000
 
 void initADC();
 void initUsart();
@@ -23,19 +23,30 @@ int main(void)
 	initADC();
 	initUsart();
 	uint16_t adcWaarde;
-	uint16_t adcWaardeTotaal;
+	uint16_t adcWaardeTotaal = 0;
 	
     while (1) 
     {
-		for (int i = 0; i < 25; i++) {
+		for (int i = 0; i < 15; i++) {
 			adcWaarde = leesADCwaarde();
 			adcWaardeTotaal += adcWaarde;
 		}
-		adcWaarde *= 1.5;
-		adcWaarde /= 10;
-		adcWaarde -= 143;
-
-		printUsart(adcWaarde);
+		
+		adcWaardeTotaal /= 15;
+		//adcWaardeTotaal -= ;
+		
+		//adcWaarde *= 1.5;
+		//adcWaarde /= 10;
+		//adcWaarde -= 20;
+		//adcWaarde *= 1.5;
+	
+		if(adcWaardeTotaal > 250)
+		adcWaardeTotaal = 0;
+		if(adcWaardeTotaal < 0)
+		adcWaardeTotaal = 0;
+	
+		
+		printUsart(adcWaardeTotaal);
     }
 	return 0;
 }
