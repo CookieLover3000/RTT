@@ -40,8 +40,8 @@ while (1) {
 	float flexV = flexADC * VCC / 1023.0;
 	float flexR = R_DIV * (VCC / flexV - 1.0);
 	
-	writeString("Resistance: ");
-	printUsart(flexR);
+//	writeString("Resistance: ");
+//	printUsart(flexR);
 
 	// Use the calculated resistance to estimate the sensor's bend angle:
 
@@ -51,7 +51,7 @@ while (1) {
 	writeString("Bend: ");
 	printUsart(angle);
 
-	_delay_ms(250);
+//	_delay_ms(250);
 
 }	
 	/*
