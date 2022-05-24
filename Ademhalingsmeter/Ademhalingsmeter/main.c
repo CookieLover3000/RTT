@@ -9,6 +9,7 @@
 
 #include <avr/io.h>
 #include <util/delay.h>
+#include <stdlib.h>
 
 void initADC();
 void initUsart();
@@ -16,23 +17,55 @@ void writeChar(char x);
 void writeString(char st[]);
 void writeInt(int i);
 uint16_t leesADCwaarde();
-void printUsart(uint16_t a);
+void printUsart(int x);
+
+long map(long x, long in_min, long in_max, long out_min, long out_max) {
+	return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
 
 int main(void)
 {
 	initADC();
 	initUsart();
+	
+	
+const float VCC = 4.98;
+const float R_DIV = 47500.0;
+const float STRAIGHT_RESISTANCE = 37300.0;
+const float BEND_RESISTANCE = 90000.0;
+
+while (1) {
+	
+	int flexADC = leesADCwaarde();
+	float flexV = flexADC * VCC / 1023.0;
+	float flexR = R_DIV * (VCC / flexV - 1.0);
+	
+	writeString("Resistance: ");
+	printUsart(flexR);
+
+	// Use the calculated resistance to estimate the sensor's bend angle:
+
+	float angle = map(flexR, STRAIGHT_RESISTANCE, BEND_RESISTANCE, 0, 90.0);
+	
+	
+	writeString("Bend: ");
+	printUsart(angle);
+
+	_delay_ms(250);
+
+}	
+	/*
 	uint16_t adcWaarde;
 	uint16_t adcWaardeTotaal = 0;
-	
+
     while (1) 
     {
 		for (int i = 0; i < 15; i++) {
 			adcWaarde = leesADCwaarde();
 			adcWaardeTotaal += adcWaarde;
 		}
-		
 		adcWaardeTotaal /= 15;
+		adcWaardeTotaal -= 150;
 		//adcWaardeTotaal -= ;
 		
 		//adcWaarde *= 1.5;
@@ -47,7 +80,9 @@ int main(void)
 	
 		
 		printUsart(adcWaardeTotaal);
-    }
+
+
+    }*/
 	return 0;
 }
 
@@ -95,7 +130,7 @@ uint16_t leesADCwaarde()
 	return a;
 }
 
-void printUsart(uint16_t x)
+void printUsart(int x)
 {
 	writeInt(x);
 	writeString("\n\r");
