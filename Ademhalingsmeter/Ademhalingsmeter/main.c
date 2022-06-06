@@ -2,7 +2,7 @@
  * Ademhalingsmeter.c
  *
  * Created: 5-5-2022 10:49:36
- * Authors : Iwan & David
+ * Authors : RTT Groep D3.2
  */ 
 
 #define F_CPU 16000000
