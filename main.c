@@ -39,9 +39,6 @@ while (1) {
 	int flexADC = leesADCwaarde();
 	float flexV = flexADC * VCC / 1023.0;
 	float flexR = R_DIV * (VCC / flexV - 1.0);
-	
-//	writeString("Resistance: ");
-//	printUsart(flexR);
 
 	// Use the calculated resistance to estimate the sensor's bend angle:
 
@@ -50,39 +47,7 @@ while (1) {
 	
 	writeString("Bend: ");
 	printUsart(angle);
-
-//	_delay_ms(250);
-
 }	
-	/*
-	uint16_t adcWaarde;
-	uint16_t adcWaardeTotaal = 0;
-
-    while (1) 
-    {
-		for (int i = 0; i < 15; i++) {
-			adcWaarde = leesADCwaarde();
-			adcWaardeTotaal += adcWaarde;
-		}
-		adcWaardeTotaal /= 15;
-		adcWaardeTotaal -= 150;
-		//adcWaardeTotaal -= ;
-		
-		//adcWaarde *= 1.5;
-		//adcWaarde /= 10;
-		//adcWaarde -= 20;
-		//adcWaarde *= 1.5;
-	
-		if(adcWaardeTotaal > 250)
-		adcWaardeTotaal = 0;
-		if(adcWaardeTotaal < 0)
-		adcWaardeTotaal = 0;
-	
-		
-		printUsart(adcWaardeTotaal);
-
-
-    }*/
 	return 0;
 }
 
@@ -126,7 +91,6 @@ uint16_t leesADCwaarde()
 	ADCSRA |= (1 << ADSC | 1 << ADIF); /* start ADC conversion */
 	while(~ADCSRA & (1 << ADIF));
 	uint16_t a = ADC;
-//	a %= 10; // werkt niet maar was wel fijner om te lezen omdat de schaal kleiner was.
 	return a;
 }
 
